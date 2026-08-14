@@ -1,1 +1,5 @@
 vanna[fastapi,mssql,openai]==2.0.2
+matplotlib
+xlsxwriter
+openpyxl
+numpy
