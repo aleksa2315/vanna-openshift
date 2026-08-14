@@ -59,11 +59,17 @@ RUN mkdir -p \
         /tmp/vanna-files \
         /tmp/.cache \
         /tmp/matplotlib \
-    && chgrp -R 0 /app \
-    && chmod -R g=u /app
-
+    && chgrp -R 0 \
+        /app \
+        /tmp/vanna-files \
+        /tmp/.cache \
+        /tmp/matplotlib \
+    && chmod -R g=u \
+        /app \
+        /tmp/vanna-files \
+        /tmp/.cache \
+        /tmp/matplotlib
 
 EXPOSE 8000
-
 
 CMD ["python", "app.py"]
