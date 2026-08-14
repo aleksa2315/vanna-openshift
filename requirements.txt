@@ -1,1 +1,1 @@
-vanna[fastapi,mysql,openai]==2.0.2
+vanna[fastapi,mssql,openai]==2.0.2
