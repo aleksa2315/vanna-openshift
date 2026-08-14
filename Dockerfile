@@ -2,14 +2,22 @@ FROM python:3.11-slim-bookworm
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
+
+# OpenShift arbitrary UID friendly
 ENV HOME=/tmp
 ENV XDG_CACHE_HOME=/tmp/.cache
+
+# Matplotlib mora imati writable config/cache folder
+ENV MPLCONFIGDIR=/tmp/matplotlib
+
+# Folder u kome Vanna pravi fajlove
+ENV VANNA_FILES_DIR=/tmp/vanna-files
 
 WORKDIR /app
 
 
 # ============================================================
-# Microsoft ODBC Driver 18 for SQL Server
+# System dependencies + Microsoft ODBC Driver 18 for SQL Server
 # ============================================================
 
 RUN apt-get update \
@@ -22,7 +30,8 @@ RUN apt-get update \
     && dpkg -i packages-microsoft-prod.deb \
     && rm packages-microsoft-prod.deb \
     && apt-get update \
-    && ACCEPT_EULA=Y apt-get install -y --no-install-recommends msodbcsql18 \
+    && ACCEPT_EULA=Y apt-get install -y --no-install-recommends \
+        msodbcsql18 \
     && rm -rf /var/lib/apt/lists/*
 
 
@@ -41,8 +50,20 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY app.py .
 
-RUN chgrp -R 0 /app && chmod -R g=u /app
+
+# ============================================================
+# OpenShift filesystem permissions
+# ============================================================
+
+RUN mkdir -p \
+        /tmp/vanna-files \
+        /tmp/.cache \
+        /tmp/matplotlib \
+    && chgrp -R 0 /app \
+    && chmod -R g=u /app
+
 
 EXPOSE 8000
+
 
 CMD ["python", "app.py"]
