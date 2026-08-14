@@ -1,0 +1,1 @@
+vanna[fastapi,mysql,openai]==2.0.2
