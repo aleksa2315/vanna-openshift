@@ -105,7 +105,9 @@ agent = Agent(
     tool_registry=tools,
     user_resolver=OpenShiftUserResolver(),
     agent_memory=DemoAgentMemory(max_items=1000),
-    config=AgentConfig()
+    config=AgentConfig(
+        max_tool_iterations=30
+    )
 )
 
 
